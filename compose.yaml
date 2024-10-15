@@ -1,13 +1,35 @@
-
 services:
-###> doctrine/doctrine-bundle ###
+
+  nginx:
+    container_name: full-symfony-template_nginx
+    build: ./docker/nginx
+    restart: on-failure
+    volumes:
+      - './:/var/www/full-symfony-template:ro'
+      - './docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro'
+      - ./docker/nginx/vhost.conf:/etc/nginx/sites-available
+    ports:
+      - "8080:80"
+      - "443:443"
+    depends_on:
+      - php-fpm
+
+  php-fpm:
+    container_name: full-symfony-template_phpfpm
+    build: ./docker/php
+    working_dir: /var/www/full-symfony-template/
+    volumes:
+      - './:/var/www/full-symfony-template/'
+
   database:
-    image: postgres:${POSTGRES_VERSION:-16}-alpine
+    container_name: full-symfony-template_postgresql
+    build: ./docker/postgres
+    ports:
+      - "5432"
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-app}
-      # You should definitely change the password in production
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
-      POSTGRES_USER: ${POSTGRES_USER:-app}
+      POSTGRES_DB: 'full_symfony_template'
+      POSTGRES_PASSWORD: 'docker'
+      POSTGRES_USER: 'root'
     healthcheck:
       test: ["CMD", "pg_isready", "-d", "${POSTGRES_DB:-app}", "-U", "${POSTGRES_USER:-app}"]
       timeout: 5s
@@ -17,9 +39,17 @@ services:
       - database_data:/var/lib/postgresql/data:rw
       # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
       # - ./docker/db/data:/var/lib/postgresql/data:rw
-###< doctrine/doctrine-bundle ###
+
+  mailer:
+    container_name: full-symfony-template_mailer
+    image: axllent/mailpit
+    ports:
+      - "1025"
+      - "1080"
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
 
 volumes:
-###> doctrine/doctrine-bundle ###
+
   database_data:
-###< doctrine/doctrine-bundle ###
