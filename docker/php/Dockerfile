@@ -1,4 +1,4 @@
-FROM php:8.1.23-fpm
+FROM php:8.3.12-fpm
 
 # Install linux packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -61,6 +61,8 @@ COPY ./conf.d/*.ini /usr/local/etc/php/conf.d/
 
 ENTRYPOINT ["php-fpm"]
 
-WORKDIR /full-symfony-template
+WORKDIR /var/www/full-symfony-template
 
-EXPOSE 9000
+COPY . .
+
+#EXPOSE 9000
