@@ -13,12 +13,16 @@ services:
     depends_on:
       - php
 
+
   php:
     container_name: full-symfony-template_php
     build: ./docker/php
     working_dir: /var/www/full-symfony-template/
+    ports:
+      - "9000:9000"
     volumes:
       - './:/var/www/full-symfony-template'
+
 
   database:
     container_name: full-symfony-template_postgresql
@@ -29,15 +33,16 @@ services:
       POSTGRES_DB: 'full_symfony_template'
       POSTGRES_PASSWORD: 'docker'
       POSTGRES_USER: 'root'
+#    volumes:
+#      - db-data:/var/lib/postgresql/data:rw
+#      - './docker/postgre/data:/var/lib/postgresql/data:rw'
     healthcheck:
       test: ["CMD", "pg_isready", "-d", "${POSTGRES_DB:-app}", "-U", "${POSTGRES_USER:-app}"]
       timeout: 5s
       retries: 5
       start_period: 60s
-    volumes:
-      - database_data:/var/lib/postgresql/data:rw
-      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/db/data:/var/lib/postgresql/data:rw
+
+
 
   mailer:
     container_name: full-symfony-template_mailer
@@ -49,6 +54,5 @@ services:
       MP_SMTP_AUTH_ACCEPT_ANY: 1
       MP_SMTP_AUTH_ALLOW_INSECURE: 1
 
-volumes:
 
-  database_data:
+

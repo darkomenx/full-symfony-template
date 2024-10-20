@@ -6,6 +6,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     openssl \
     git \
     zip \
+    wget \
+    curl \
     libzip-dev \
     gnupg2 \
     libicu-dev \
@@ -26,8 +28,6 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN docker-php-ext-configure intl \
     && docker-php-ext-install intl \
     && docker-php-ext-install pdo pdo_pgsql pgsql bcmath gd zip \
-    && pecl install xdebug \
-    && docker-php-ext-enable xdebug \
     && pecl install redis \
     && docker-php-ext-enable redis \
     && PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
@@ -40,15 +40,19 @@ RUN docker-php-ext-configure intl \
     && docker-php-ext-install pcntl \
     && docker-php-ext-install sockets
 
-ARG XDEBUG_MODES
-ARG REMOTE_HOST="host.docker.internal"
-ARG REMOTE_PORT=9003
-ARG IDE_KEY="docker"
 
-ENV MODES=$XDEBUG_MODES
-ENV CLIENT_HOST=$REMOTE_HOST
-ENV CLIENT_PORT=$REMOTE_PORT
-ENV IDEKEY=$IDE_KEY
+RUN pecl install xdebug \
+    && docker-php-ext-enable xdebug
+
+#ARG XDEBUG_MODES
+#ARG REMOTE_HOST="host.docker.internal"
+#ARG REMOTE_PORT=9003
+#ARG IDE_KEY="docker"
+
+#ENV MODES=$XDEBUG_MODES
+#ENV CLIENT_HOST=$REMOTE_HOST
+#ENV CLIENT_PORT=$REMOTE_PORT
+#ENV IDEKEY=$IDE_KEY
 
 RUN git config --global alias.st status
 
@@ -59,10 +63,13 @@ RUN git config --global alias.st status
 
 COPY ./conf.d/*.ini /usr/local/etc/php/conf.d/
 
+# Oh-My-Zsh install
+RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.2.0/zsh-in-docker.sh)"
+
 ENTRYPOINT ["php-fpm"]
 
 WORKDIR /var/www/full-symfony-template
 
 COPY . .
 
-#EXPOSE 9000
+EXPOSE 9000
