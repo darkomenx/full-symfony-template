@@ -2,12 +2,12 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\User;
+use App\Entity\Users;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class UserFixtures extends Fixture
+class UsersFixtures extends Fixture
 {
     private UserPasswordHasherInterface $hasher;
 
@@ -18,7 +18,7 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $user = new User();
+        $user = new Users();
         $user->setBridgeApiUUID('99a37927-eae2-48fc-88b1-480d12c71368');
         $user->setCivility('Mr');
         $user->setFirstName('remy');
@@ -37,7 +37,7 @@ class UserFixtures extends Fixture
         $manager->persist($user);
         $manager->flush();
 
-        $user = new User();
+        $user = new Users();
         $user->setCivility('Mr');
         $user->setFirstName('jean');
         $user->setLastName('dumont');
@@ -55,7 +55,7 @@ class UserFixtures extends Fixture
         $manager->persist($user);
         $manager->flush();
 
-        $user = new User();
+        $user = new Users();
         $user->setCivility('Mme');
         $user->setFirstName('delphine');
         $user->setLastName('yau');
@@ -73,7 +73,7 @@ class UserFixtures extends Fixture
         $manager->persist($user);
         $manager->flush();
 
-        $user = new User();
+        $user = new Users();
         $user->setCivility('Mme');
         $user->setFirstName('julie');
         $user->setLastName('florite');

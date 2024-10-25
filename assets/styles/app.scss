@@ -1,0 +1,36 @@
+body {
+    /*background-color: #2a2e35;*/
+    background-color: black;
+}
+
+#sidebar
+{
+    display: inline-block;
+    height: 100vh;
+    background-color: #2b3035 ;
+    width: 50px;
+    text-align: center;
+
+    ul
+    {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    li
+    {
+        padding: 10px 10px;
+
+        &.spacer
+        {
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+    }
+}
+
+#main-container
+{
+    display: inline-block;
+}

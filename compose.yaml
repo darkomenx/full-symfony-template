@@ -22,17 +22,18 @@ services:
       - "9000:9000"
     volumes:
       - './:/var/www/full-symfony-template'
+      - '/var/www/full-symfony-template/vendor'
 
 
-  database:
+  database-full-symfony-template:
     container_name: full-symfony-template_postgresql
     build: ./docker/postgres
     ports:
-      - "5432"
+      - "5432:5432"
     environment:
       POSTGRES_DB: 'full_symfony_template'
-      POSTGRES_PASSWORD: 'docker'
       POSTGRES_USER: 'root'
+      POSTGRES_PASSWORD: 'docker'
 #    volumes:
 #      - db-data:/var/lib/postgresql/data:rw
 #      - './docker/postgre/data:/var/lib/postgresql/data:rw'

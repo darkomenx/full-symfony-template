@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+	{% include 'Components/_navbar.html.twig' %}
+
+	{% include 'Components/_sidebar.html.twig' %}
+
+	<div id="main-container">
+		{% block content %}{% endblock %}
+	</div>
+
+{% endblock %}

@@ -8,6 +8,8 @@ RUN apt install -y git
 RUN apt install -y curl
 RUN apt install -y wget
 RUN apt install -y vim
+RUN apt install -y zip
+RUN apt install -y iputils-ping
 
 COPY ./nginx.conf /etc/nginx/conf.d/nginx.conf
 COPY ./self-signed.conf /etc/nginx/ssl/self-signed.conf

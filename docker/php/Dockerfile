@@ -8,6 +8,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     zip \
     wget \
     curl \
+    iputils-ping \
+    vim \
     libzip-dev \
     gnupg2 \
     libicu-dev \
